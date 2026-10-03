@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+jinja2
+python-multipart
+python-dotenv
+pydantic
+google-generativeai
+transformers
+torch
+sentencepiece

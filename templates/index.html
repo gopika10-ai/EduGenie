@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EduGenie | Your AI Learning Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}" />
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">
+        <span class="brand-mark">C</span>
+        <div class="brand-text">
+          <h1>EduGenie</h1>
+          <p>Your AI Learning Assistant</p>
+        </div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="#" class="nav-item active" data-view="chat">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-4-.9L3 20.5l1.6-4.6A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z"/></svg>
+        </span>
+        <span>Chat</span>
+      </a>
+      <a href="#" class="nav-item" data-view="study">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 18.5h16V21H6.5A2.5 2.5 0 0 1 4 18.5z"/></svg>
+        </span>
+        <span>Study Tools</span>
+      </a>
+      <a href="#" class="nav-item" data-view="learning">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5z"/><path d="M6 10.5V16c0 1.4 2.7 3 6 3s6-1.6 6-3v-5.5L12 16z"/></svg>
+        </span>
+        <span>My Learning</span>
+      </a>
+      <a href="#" class="nav-item" data-view="settings">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7.5 19.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3 13.9H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 7.5l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 10 3V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1.2z"/></svg>
+        </span>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <span class="dot"></span> Gemini Connected
+    </div>
+  </aside>
+
+  <!-- ============ MAIN CHAT ============ -->
+  <main class="main">
+
+    <section class="chat" id="chat">
+
+      <!-- empty state -->
+      <div class="hero" id="hero">
+        <h2>Hi! I'm EduGenie</h2>
+        <p>Ask me anything about your studies.</p>
+
+        <div class="chips" id="chips">
+          <button class="chip" data-mode="explain">Explain a topic</button>
+          <button class="chip" data-mode="summarize">Summarize</button>
+          <button class="chip" data-mode="quiz">Generate Quiz</button>
+          <button class="chip" data-mode="qa">Create Notes</button>
+        </div>
+      </div>
+
+      <div class="messages" id="messages"></div>
+
+    </section>
+
+    <!-- composer -->
+    <div class="composer">
+      <div class="composer-inner">
+
+        <div class="mode-row">
+          <label class="mode-label" for="mode">Task</label>
+          <select class="mode-select" id="mode">
+            <option value="qa">QnA</option>
+            <option value="explain">Explain</option>
+            <option value="quiz">Quiz</option>
+            <option value="summarize">Summary</option>
+            <option value="learn">Recommend Path</option>
+          </select>
+        </div>
+
+        <div class="input-shell">
+          <textarea id="input" rows="1" placeholder="Type your question here..."
+            aria-label="Type your question here"></textarea>
+          <button class="send" id="send" title="Send" aria-label="Send">
+            <svg viewBox="0 0 24 24"><path d="M3.4 20.4 21 12 3.4 3.6 3.4 10l12.6 2-12.6 2z"/></svg>
+          </button>
+        </div>
+
+      </div>
+      <p class="powered">Powered by Google Gemini</p>
+    </div>
+
+  </main>
+
+  <!-- ============ RIGHT PANEL ============ -->
+  <aside class="panel">
+    <h3 class="panel-title">Questions</h3>
+
+    <div class="select-wrap">
+      <select class="topic-select" id="topic" aria-label="Pick a topic">
+        <option>Big Dreams</option>
+        <option>Photosynthesis</option>
+        <option>Pythagoras Theorem</option>
+        <option>SQL Basics</option>
+        <option>Oceans &amp; Rivers</option>
+        <option>Machine Learning</option>
+      </select>
+      <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+
+    <ul class="taglines">
+      <li>
+        <span class="tag-dot"></span>
+        <span class="tag-text"><b>Learn</b> Anything</span>
+      </li>
+      <li>
+        <span class="tag-dot"></span>
+        <span class="tag-text"><b>Study</b> Smarter</span>
+      </li>
+      <li>
+        <span class="tag-dot"></span>
+        <span class="tag-text"><b>Achieve</b> More</span>
+      </li>
+    </ul>
+
+    <div class="panel-card" id="panelCard">
+      <p class="card-label">Recent</p>
+      <ul class="card-list" id="history">
+        <li class="empty">No questions yet.</li>
+      </ul>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- refs ---------- */
+  var chat      = document.getElementById("chat");
+  var hero      = document.getElementById("hero");
+  var messages  = document.getElementById("messages");
+  var input     = document.getElementById("input");
+  var sendBtn   = document.getElementById("send");
+  var modeSel   = document.getElementById("mode");
+  var topicSel  = document.getElementById("topic");
+  var chips     = document.getElementById("chips");
+  var historyEl = document.getElementById("history");
+
+  /* ---------- endpoint map (matches main.py) ---------- */
+  var ENDPOINTS = {
+    qa:         "/qa",
+    explain:    "/explain",
+    quiz:       "/quiz",
+    summarize:  "/summarize",
+    learn:      "/learn/recommendations"
+  };
+
+  var PLACEHOLDER = {
+    qa:        "Ask a question...",
+    explain:   "Explain photosynthesis",
+    summarize: "Summarize this in simple words",
+    quiz:      "Generate a quiz from this passage",
+    learn:     "I want to learn SQL"
+  };
+
+  var busy = false;
+
+  /* ---------- helpers ---------- */
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  function stamp() {
+    var d = new Date();
+    var h = d.getHours(), m = d.getMinutes();
+    var ap = h >= 12 ? "PM" : "AM";
+    h = h % 12; if (h === 0) h = 12;
+    m = m < 10 ? "0" + m : m;
+    return h + ":" + m + " " + ap;
+  }
+
+  /* small, safe markdown -> html (line based, produces valid block HTML) */
+  function md(text) {
+    var src = esc(text);
+
+    /* lift fenced code out so no other rule touches it */
+    var blocks = [];
+    src = src.replace(/```([\s\S]*?)```/g, function (_, code) {
+      var body = code.replace(/^\n/, "").replace(/\n$/, "");
+      /* single line fence stays inline */
+      if (body.indexOf("\n") === -1) { return "<code>" + body + "</code>"; }
+      blocks.push(body.replace(/\n/g, "\u0001"));
+      return "\u0000CODE" + (blocks.length - 1) + "\u0000";
+    });
+
+    function inline(s) {
+      return s
+        .replace(/`([^`]+)`/g, "<code>$1</code>")
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+    }
+
+    var lines = src.split(/\r?\n/);
+    var html = "";
+    var list = null;
+    var para = [];
+
+    function flushPara() {
+      if (para.length) {
+        html += "<p>" + inline(para.join("<br>")) + "</p>";
+        para = [];
+      }
+    }
+    function closeList() {
+      if (list) { html += "</" + list + ">"; list = null; }
+    }
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+
+      /* code placeholder: emit it at block level, injected as <pre> at the end */
+      if (/^\s*\u0000CODE\d+\u0000\s*$/.test(line)) {
+        flushPara(); closeList();
+        html += line.trim();
+        continue;
+      }
+      if (/^\s*$/.test(line)) { flushPara(); closeList(); continue; }
+
+      var h = line.match(/^(#{1,6})\s+(.*)$/);
+      if (h) {
+        flushPara(); closeList();
+        var lvl = Math.min(h[1].length + 2, 6);
+        html += "<h" + lvl + ">" + inline(h[2]) + "</h" + lvl + ">";
+        continue;
+      }
+
+      var ul = line.match(/^\s*[-*+\u2022]\s+(.*)$/);
+      if (ul) {
+        flushPara();
+        if (list !== "ul") { closeList(); html += "<ul>"; list = "ul"; }
+        html += "<li>" + inline(ul[1]) + "</li>";
+        continue;
+      }
+
+      var ol = line.match(/^\s*\d+[.)]\s+(.*)$/);
+      if (ol) {
+        flushPara();
+        if (list !== "ol") { closeList(); html += "<ol>"; list = "ol"; }
+        html += "<li>" + inline(ol[1]) + "</li>";
+        continue;
+      }
+
+      /* a plain line always ends any open list */
+      closeList();
+      para.push(line);
+    }
+    flushPara();
+    closeList();
+
+    return html.replace(/\u0000CODE(\d+)\u0000/g, function (_, i) {
+      return "<pre><code>" + blocks[+i].replace(/\u0001/g, "\n") + "</code></pre>";
+    });
+  }
+
+  function scrollDown() {
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function hideHero() {
+    if (hero) { hero.style.display = "none"; }
+  }
+
+  /* ---------- renderers ---------- */
+  function addUser(text) {
+    hideHero();
+    var row = document.createElement("div");
+    row.className = "row row-user";
+    row.innerHTML =
+      '<div class="bubble bubble-user">' + md(text) + '</div>' +
+      '<div class="time time-user">' + stamp() + '</div>';
+    messages.appendChild(row);
+    scrollDown();
+    pushHistory(text);
+  }
+
+  function addBot(text) {
+    var row = document.createElement("div");
+    row.className = "row row-bot";
+    row.innerHTML =
+      '<div class="avatar">e</div>' +
+      '<div class="bot-wrap">' +
+        '<div class="bubble bubble-bot">' + (text ? md(text) : "") + '</div>' +
+        '<div class="time time-bot">' + stamp() + '</div>' +
+      '</div>';
+    messages.appendChild(row);
+    scrollDown();
+    return row;
+  }
+
+  function addThinking() {
+    var row = document.createElement("div");
+    row.className = "row row-bot";
+    row.id = "thinkingRow";
+    row.innerHTML =
+      '<div class="avatar">e</div>' +
+      '<div class="bot-wrap">' +
+        '<div class="bubble bubble-bot thinking"><span></span><span></span><span></span></div>' +
+        '<div class="time time-bot">Thinking...</div>' +
+      '</div>';
+    messages.appendChild(row);
+    scrollDown();
+    return row;
+  }
+
+  function dropThinking() {
+    var t = document.getElementById("thinkingRow");
+    if (t) { t.parentNode.removeChild(t); }
+  }
+
+  /* quiz: 3 MCQs x 4 options, tells you if wrong */
+  function addQuiz(quiz) {
+    hideHero();
+    var row = document.createElement("div");
+    row.className = "row row-bot";
+    row.innerHTML = '<div class="avatar">e</div><div class="bot-wrap"></div>';
+    var wrap = row.querySelector(".bot-wrap");
+
+    var list = Array.isArray(quiz) ? quiz : (quiz && quiz.questions) || [];
+    if (!list.length) {
+      wrap.innerHTML = '<div class="bubble bubble-bot">' + md("Sorry, I could not generate a quiz for that.") + '</div>';
+      messages.appendChild(row); scrollDown(); return;
+    }
+
+    var html = '<div class="bubble bubble-bot quiz-bubble"><p><strong>Quiz</strong></p>';
+    list.forEach(function (q, qi) {
+      var opts = Array.isArray(q.options) ? q.options : [];
+      html += '<div class="q" data-q="' + qi + '">';
+      html += '<p class="q-text">' + esc(q.question || ("Question " + (qi + 1))) + '</p>';
+      html += '<div class="opts">';
+      opts.forEach(function (o, oi) {
+        html += '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' +
+                '<span class="opt-key">' + "ABCD".charAt(oi) + '</span>' +
+                '<span class="opt-val">' + esc(o) + '</span></button>';
+      });
+      html += '</div><div class="verdict"></div></div>';
+    });
+    html += '</div><div class="time time-bot">' + stamp() + '</div>';
+
+    wrap.innerHTML = html;
+    messages.appendChild(row);
+
+    wrap.addEventListener("click", function (ev) {
+      var btn = ev.target.closest ? ev.target.closest(".opt") : null;
+      if (!btn || btn.disabled) { return; }
+      var qi = btn.getAttribute("data-q");
+      var oi = parseInt(btn.getAttribute("data-o"), 10);
+      var q = list[qi] || {};
+      var correct = q.answer != null ? parseInt(q.answer, 10)
+                 : (q.correct_answer != null ? parseInt(q.correct_answer, 10) : -1);
+      var box = btn.closest(".q");
+      var all = box.querySelectorAll(".opt");
+      for (var i = 0; i < all.length; i++) {
+        all[i].disabled = true;
+        var idx = parseInt(all[i].getAttribute("data-o"), 10);
+        if (idx === correct) { all[i].classList.add("correct"); }
+      }
+      var v = box.querySelector(".verdict");
+      if (oi === correct) {
+        btn.classList.add("correct");
+        v.className = "verdict ok";
+        v.textContent = "Correct!";
+      } else {
+        btn.classList.add("wrong");
+        v.className = "verdict bad";
+        v.textContent = "Not quite — the correct answer is " + "ABCD".charAt(correct) + ".";
+      }
+    });
+
+    scrollDown();
+  }
+
+  /* ---------- history in right panel ---------- */
+  function pushHistory(q) {
+    var li = historyEl.querySelector(".empty");
+    if (li) { li.parentNode.removeChild(li); }
+    var item = document.createElement("li");
+    item.textContent = q.length > 42 ? q.slice(0, 42) + "..." : q;
+    historyEl.insertBefore(item, historyEl.firstChild);
+    while (historyEl.children.length > 6) {
+      historyEl.removeChild(historyEl.lastChild);
+    }
+  }
+
+  /* ---------- api ---------- */
+  function send() {
+    if (busy) { return; }
+    var text = input.value.trim();
+    if (!text) { return; }
+
+    var mode = modeSel.value;
+    addUser(text);
+    input.value = "";
+    autoGrow();
+    busy = true;
+    sendBtn.disabled = true;
+    addThinking();
+
+    fetch(ENDPOINTS[mode] || ENDPOINTS.qa, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question: text,
+        topic: text,
+        text: text,
+        passage: text,
+        query: text
+      })
+    })
+      .then(function (r) {
+        return r.json().then(function (d) {
+          if (!r.ok) { throw new Error(d && (d.detail || d.error) ? (d.detail || d.error) : "HTTP " + r.status); }
+          return d;
+        });
+      })
+      .then(function (data) {
+        dropThinking();
+        if (mode === "quiz") {
+          addQuiz(data && (data.quiz || data.questions || data.result) ? (data.quiz || data.questions || data.result) : data);
+        } else {
+          var out = data && (data.answer || data.explanation || data.summary || data.learning_path || data.result || data.message);
+          addBot(out || JSON.stringify(data));
+        }
+      })
+      .catch(function (err) {
+        dropThinking();
+        addBot("Sorry, something went wrong. " + (err && err.message ? err.message : "Please try again."));
+      })
+      .then(function () {
+        busy = false;
+        sendBtn.disabled = false;
+        input.focus();
+      });
+  }
+
+  /* ---------- ui wiring ---------- */
+  function setMode(mode) {
+    modeSel.value = mode;
+    if (input) { input.placeholder = PLACEHOLDER[mode] || PLACEHOLDER.qa; }
+  }
+
+  function autoGrow() {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 160) + "px";
+  }
+
+  if (chips) {
+    chips.addEventListener("click", function (ev) {
+      var b = ev.target.closest ? ev.target.closest(".chip") : null;
+      if (!b) { return; }
+      setMode(b.getAttribute("data-mode"));
+      input.focus();
+    });
+  }
+
+  modeSel.addEventListener("change", function () {
+    input.placeholder = PLACEHOLDER[modeSel.value] || PLACEHOLDER.qa;
+  });
+
+  if (topicSel) {
+    topicSel.addEventListener("change", function () {
+      setMode("explain");
+      input.value = "Explain " + topicSel.value;
+      autoGrow();
+      input.focus();
+    });
+  }
+
+  sendBtn.addEventListener("click", send);
+
+  input.addEventListener("input", autoGrow);
+  input.addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter" && !ev.shiftKey) {
+      ev.preventDefault();
+      send();
+    }
+  });
+
+  document.querySelectorAll(".nav-item").forEach(function (a) {
+    a.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      document.querySelectorAll(".nav-item").forEach(function (n) { n.classList.remove("active"); });
+      a.classList.add("active");
+    });
+  });
+
+  autoGrow();
+  input.focus();
+})();
+</script>
+</body>
+</html>
